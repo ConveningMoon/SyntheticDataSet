@@ -5,7 +5,7 @@ import torch
 import random
 import os
 
-pipeline = DiffusionPipeline.from_pretrained("SG161222/RealVisXL_V4.0", torch_dtype=torch.float16)
+pipeline = DiffusionPipeline.from_pretrained("runwayml/stable-diffusion-v1-5", torch_dtype=torch.float16)
 pipeline.to("cuda")
 
 ### generate images ###
@@ -38,7 +38,7 @@ for j in range(5):
         # Include the age range condition in the prompt
         prompt = f'Medium-shot portrait of {ethnicity} {gender}, age {age_range}, {emotion_prompt}, front view, ' \
                  'looking at the camera, color photography, photorealistic, hyperrealistic, ' \
-                 'incredibly detailed, crisp focus, digital art, depth of field, 50mm'
+                 'incredibly detailed, crisp focus, digital art, depth of field, 50mm, 8k'
 
         negative_prompt = '3d, cartoon, anime, sketches, worst quality:2, low quality:2, ' \
                           'normal quality:2, low resolution, lowres, monochrome, grayscale, plastic, fake, ' \

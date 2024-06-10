@@ -5,12 +5,12 @@ import torch
 import random
 import os
 
-pipeline = DiffusionPipeline.from_pretrained("runwayml/stable-diffusion-v1-5", torch_dtype=torch.float16)
+pipeline = DiffusionPipeline.from_pretrained("SG161222/Realistic_Vision_V6.0_B1_noVAE", torch_dtype=torch.float16)
 pipeline.to("cuda")
 
 ### generate images ###
 # Ensuring directories for all emotions exist
-emotions = ['smiling', 'surprised']
+emotions = ['happy', 'smiling', 'neutral', 'surprised', 'angry', 'sad']
 for emotion in emotions:
     os.makedirs(f'./content/faces/{emotion}', exist_ok=True)
 
@@ -21,16 +21,18 @@ genders = ['male', 'female']
 
 # Correcting the emotion_prompt dictionary to ensure clear representation of emotions
 emotion_prompts = {
+    'happy': 'happy face expression, visible teeth, super happy, open mouth',
     'smiling': 'slight smile with no visible teeth, soft eyes, closed mouth, no teeth, no open mouth, mouth closed, none teeth',
-    'surprised': 'surprised, mouth wide open, raised eyebrows, eyes wide open, natural expression, perfect expression, natural face'
+    'neutral': 'neutral expression, straight face, looking directly at the camera',
+    'surprised': 'surprised, mouth wide open, raised eyebrows, eyes wide open, natural expression, perfect expression, natural face',
+    'angry': 'angry',
+    'sad': 'frowning, sad face expression, crying, emotional, depressed'
 }
 
 # Define the age range for the generated images
 age_range = "15-35 years old"
 
-counter = 0
 for j in range(5):
-    counter += 1
     for emotion, emotion_prompt in emotion_prompts.items():
         ethnicity = random.choice(ethnicities)
         gender = random.choice(genders)
@@ -49,5 +51,3 @@ for j in range(5):
         img = pipeline(prompt, negative_prompt=negative_prompt).images[0]
         img_path = f'./content/faces/{emotion}/{str(j).zfill(5)}.png'
         img.save(img_path)
-
-    print(f'Generated {counter} sets of images')
